@@ -3,8 +3,7 @@
   API](https://daisy.github.io/pipeline/WebServiceAPI)"
   (:require [clj-http.client :as client]
             [clj-http.util :refer [url-encode]]
-            [clj-time.core :as t]
-            [clj-time.format :as f]
+            [java-time :as time]
             [clojure.data.codec.base64 :as b64]
             [clojure.data.xml :as xml]
             [clojure.data.zip :as zf]
@@ -17,7 +16,6 @@
 
 (def ws-url "http://localhost:8181/ws")
 
-(def ^:private iso-formatter (f/formatters :date-time-no-ms))
 (def ^:private auth-id "clientid")
 (def ^:private secret "supersekret")
 (def ^:private remote false)
@@ -31,7 +29,7 @@
       String.))
 
 (defn auth-query-params [uri]
-  (let [timestamp (f/unparse iso-formatter (t/now))
+  (let [timestamp (time/format :iso-local-date-time (time/local-date-time))
         nonce (crypt-rand/base64 32)
         params {"authid" auth-id "time" timestamp "nonce" nonce}
         query-string (str uri "?" (client/generate-query-string params))

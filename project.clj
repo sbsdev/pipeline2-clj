@@ -7,7 +7,7 @@
                  [org.clojure/data.codec "0.1.1"]
                  [org.clojure/data.xml "0.0.8"]
                  [org.clojure/data.zip "0.1.2"]
-                 [clj-time "0.15.1"]
+                 [clojure.java-time "0.3.2"]
                  [pandect "0.5.4"]
                  [crypto-random "1.2.0"]
                  [clj-http "3.9.1"]
