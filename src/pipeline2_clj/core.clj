@@ -37,9 +37,10 @@
     {:query-params
      {"authid" auth-id "time" timestamp "nonce" nonce "sign" hashcode}}))
 
+(def qname (partial xml/qname "http://www.daisy.org/ns/pipeline/data"))
+
 (defn job-sexp [script inputs options]
-  (let [script-url (str ws-url "/script/" script)
-        qname (partial xml/qname "http://www.daisy.org/ns/pipeline/data")]
+  (let [script-url (str ws-url "/script/" script)]
     [(qname "jobRequest")
      [(qname "script") {:href script-url}]
      (for [[port file] inputs]
@@ -142,7 +143,7 @@
   ;; unfortunately `(xml-> :results :result :result (attr :href))`
   ;; doesn't work here as `xml->` has a problem with that, see
   ;; https://dev.clojure.org/jira/browse/DZIP-6
-  (-> job xml-zip (xml-> :results :result zf/children (attr :href))))
+  (-> job xml-zip (xml-> (qname "results") (qname "result") zf/children (attr :href))))
 
 (defn get-stream [url]
   (let [response (client/get url (merge (auth-query-params url) {:as :stream}))]
