@@ -5,7 +5,7 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [org.clojure/data.codec "0.1.1"]
-                 [org.clojure/data.xml "0.0.8"]
+                 [org.clojure/data.xml "0.2.0-alpha6"]
                  [org.clojure/data.zip "1.0.0"]
                  [clojure.java-time "0.3.2"]
                  [pandect "1.0.1"]

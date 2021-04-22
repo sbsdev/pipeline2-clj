@@ -38,16 +38,17 @@
      {"authid" auth-id "time" timestamp "nonce" nonce "sign" hashcode}}))
 
 (defn job-sexp [script inputs options]
-  (let [script-url (str ws-url "/script/" script)]
-    [:jobRequest {:xmlns "http://www.daisy.org/ns/pipeline/data"}
-     [:script {:href script-url}]
+  (let [script-url (str ws-url "/script/" script)
+        qname (partial xml/qname "http://www.daisy.org/ns/pipeline/data")]
+    [(qname "jobRequest")
+     [(qname "script") {:href script-url}]
      (for [[port file] inputs]
-       [:input {:name (name port)}
-        [:item {:value (if-not remote
+       [(qname "input") {:name (name port)}
+        [(qname "item") {:value (if-not remote
                          (str "file:" (url-encode file))
                          (url-encode (.getName (io/file file))))}]])
      (for [[key value] options]
-       [:option {:name (name key)} value])]))
+       [(qname "option") {:name (name key)} value])]))
 
 (defn job-request [script inputs options]
   (-> (job-sexp script inputs options)
