@@ -11,7 +11,7 @@
             [clojure.java.io :as io]
             [clojure.zip :refer [xml-zip]]
             [crypto.random :as crypt-rand]
-            [pandect.core :as pandect])
+            [pandect.algo.sha1 :as pandect])
   (:import [java.util.zip ZipEntry ZipOutputStream]))
 
 (def ws-url "http://localhost:8181/ws")
