@@ -5,8 +5,21 @@ API](https://daisy.github.io/pipeline/WebServiceAPI).
 
 ## Usage
 
-FIXME
+```clojure
+;; list all script supported by the server
+(print (xml/indent-str (scripts)))
 
+;; get help for a particular script
+(print (xml/indent-str (script "dtbook-to-epub3")))
+
+;; invoke a script
+(require '[clojure.java.io :as io])
+(-> (create-job-and-wait "dtbook-to-epub3" {:source "dtbook-file.xml"} {})
+    get-results
+    first
+    get-stream
+    (io/copy (io/file "book.epub")))
+```
 ## License
 
 Copyright © 2021 Swiss Library for the Blind, Visually Impaired and Print Disabled
