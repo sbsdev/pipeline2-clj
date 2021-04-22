@@ -6,6 +6,9 @@ API](https://daisy.github.io/pipeline/WebServiceAPI).
 ## Usage
 
 ```clojure
+(require '[clojure.java.io :as io])
+(require '[clojure.data.xml :as xml])
+
 ;; list all script supported by the server
 (print (xml/indent-str (scripts)))
 
@@ -13,7 +16,7 @@ API](https://daisy.github.io/pipeline/WebServiceAPI).
 (print (xml/indent-str (script "dtbook-to-epub3")))
 
 ;; invoke a script
-(require '[clojure.java.io :as io])
+
 (-> (create-job-and-wait "dtbook-to-epub3" {:source "dtbook-file.xml"} {})
     get-results
     first
