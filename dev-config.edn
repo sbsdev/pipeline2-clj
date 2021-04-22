@@ -1,0 +1,7 @@
+;; The dev-config.edn file is used for local environment variables, such as database credentials.
+
+{:ws-url "http://localhost:8181/ws"
+ :auth-id "clientid"
+ :secret "supersekret"
+ :remote true
+}

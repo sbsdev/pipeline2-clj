@@ -3,22 +3,26 @@
   API](https://daisy.github.io/pipeline/WebServiceAPI)"
   (:require [clj-http.client :as client]
             [clj-http.util :refer [url-encode]]
-            [java-time :as time]
             [clojure.data.codec.base64 :as b64]
             [clojure.data.xml :as xml]
             [clojure.data.zip :as zf]
             [clojure.data.zip.xml :refer [attr xml-> xml1->]]
             [clojure.java.io :as io]
             [clojure.zip :refer [xml-zip]]
+            [cprop.core :refer [load-config]]
+            [cprop.source :as source]
             [crypto.random :as crypt-rand]
+            [java-time :as time]
             [pandect.algo.sha1 :as pandect])
   (:import [java.util.zip ZipEntry ZipOutputStream]))
 
-(def ws-url "http://localhost:8181/ws")
+(def env (load-config :merge [(source/from-system-props)
+                              (source/from-env)]))
 
-(def ^:private auth-id "clientid")
-(def ^:private secret "supersekret")
-(def ^:private remote false)
+(def ws-url (env :ws-url))
+(def auth-id (env :auth-id))
+(def secret (env :secret))
+(def remote (env :remote))
 
 (def ^:private timeout 1000)
 (def ^:private poll-interval 3000)
