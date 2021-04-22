@@ -1,6 +1,6 @@
 (ns pipeline2-clj.core
   "Thin layer on top of the [Pipeline2 Web Service
-  API](https://code.google.com/p/daisy-pipeline/wiki/WebServiceAPI)"
+  API](https://daisy.github.io/pipeline/WebServiceAPI)"
   (:require [clj-http.client :as client]
             [clj-http.util :refer [url-encode]]
             [clj-time.core :as t]

@@ -1,7 +1,7 @@
 (ns pipeline2-clj.scripts
   "Thin layer above the [Pipeline2 Web Service
-  API](https://code.google.com/p/daisy-pipeline/wiki/WebServiceAPI) to
-  invoke specific scripts."
+  API](https://daisy.github.io/pipeline/WebServiceAPI) to invoke
+  specific scripts."
   (:require [clojure.string :as string]
             [pipeline2-clj.core :as dp2]))
 
