@@ -16,7 +16,6 @@ API](https://daisy.github.io/pipeline/WebServiceAPI).
 (print (xml/indent-str (script "dtbook-to-epub3")))
 
 ;; invoke a script
-
 (-> (create-job-and-wait "dtbook-to-epub3" {:source "dtbook-file.xml"} {})
     get-results
     first
