@@ -7,6 +7,7 @@
                  [org.clojure/data.codec "0.1.1"]
                  [org.clojure/data.xml "0.2.0-alpha6"]
                  [org.clojure/data.zip "1.0.0"]
+                 [org.clojure/tools.logging "1.1.0"]
                  [clojure.java-time "0.3.2"]
                  [pandect "1.0.1"]
                  [crypto-random "1.2.1"]
