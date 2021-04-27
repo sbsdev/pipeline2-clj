@@ -14,11 +14,4 @@
 (defn epub3-to-daisy202 [input & {:keys [temp-dir output-dir] :as opts}]
   (dp2/create-job-and-wait "epub3-to-daisy202" {} (merge {:epub input} opts)))
 
-(defn dtbook-to-epub3 [input]
-  (->>
-   (dp2/create-job-and-wait "sbs:dtbook-to-ebook" {:source input} {})
-   (dp2/get-results)
-   (filter #(string/ends-with? % ".epub"))
-   first
-   dp2/get-stream))
 

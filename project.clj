@@ -13,7 +13,8 @@
                  [crypto-random "1.2.1"]
                  [clj-http "3.12.1"]
                  [cprop "0.1.17"]
-                 [slingshot "0.12.2"]]
+                 [slingshot "0.12.2"]
+                 [babashka/fs "0.0.5"]]
   :repl-options {:init-ns pipeline2-clj.core}
 
   :profiles
