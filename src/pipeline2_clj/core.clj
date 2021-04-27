@@ -66,7 +66,7 @@
     (when (client/success? response)
       (-> response :body xml/parse-str))))
 
-(defn job [id]
+(defn get-job [id]
   (let [url (str ws-url "/jobs/" id)
         response (client/get url (merge (auth-query-params url)
                                         #_{:socket-timeout timeout :conn-timeout timeout}))]
@@ -157,11 +157,11 @@
 (defn create-job-and-wait [script inputs options]
   (let [id (get-id (job-create script inputs options))]
     (Thread/sleep poll-interval) ; wait a bit before polling the first time
-    (loop [result (job id)]
+    (loop [result (get-job id)]
       (let [status (get-status result)
             _ (println "Status: " status)]
         (if (= "RUNNING" status)
           (do
             (Thread/sleep poll-interval)
-            (recur (job id)))
+            (recur (get-job id)))
           result)))))
