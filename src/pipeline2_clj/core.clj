@@ -8,12 +8,14 @@
             [clojure.data.zip :as zf]
             [clojure.data.zip.xml :refer [attr xml-> xml1->]]
             [clojure.java.io :as io]
+            [clojure.tools.logging :as log]
             [clojure.zip :refer [xml-zip]]
             [cprop.core :refer [load-config]]
             [cprop.source :as source]
             [crypto.random :as crypt-rand]
             [java-time :as time]
-            [pandect.algo.sha1 :as pandect])
+            [pandect.algo.sha1 :as pandect]
+            [slingshot.slingshot :refer [try+]])
   (:import [java.util.zip ZipEntry ZipOutputStream]))
 
 (def env (load-config :merge [(source/from-system-props)
@@ -137,7 +139,7 @@
   (let [url (str ws-url "/alive")]
     (client/success? (client/get url))))
 
-(defn- get-id [job]
+(defn get-id [job]
   (-> job xml-zip (xml1-> (attr :id))))
 
 (defn- get-status [job]
@@ -153,6 +155,33 @@
   (let [response (client/get url (merge (auth-query-params url) {:as :stream}))]
     (when (client/success? response)
       (-> response :body))))
+
+(defmacro with-job
+  [[job job-create-form] & body]
+  `(try+
+    (let [~job ~job-create-form]
+      (try
+        ~@body
+        (finally
+          (when ~job
+            (job-delete (get-id ~job))))))
+    (catch [:status 403] {:keys ~'[headers body]}
+      (log/warn "403" ~'headers))
+    (catch [:status 404] {:keys ~'[headers body]}
+      (log/warn "Not Found" ~'headers ~'body))
+    (catch [:status 500] {:keys ~'[headers body]}
+      (log/warn "Server error" ~'headers ~'body))))
+
+(defn wait-for-result [job]
+  (Thread/sleep poll-interval) ; wait a bit before polling the first time
+  (let [id (get-id job)]
+    (loop [result (get-job id)]
+      (let [status (get-status result)]
+        (if (= "RUNNING" status)
+          (do
+            (Thread/sleep poll-interval)
+            (recur (get-job id)))
+          result)))))
 
 (defn create-job-and-wait [script inputs options]
   (let [id (get-id (job-create script inputs options))]

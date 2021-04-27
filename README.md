@@ -15,12 +15,17 @@ API](https://daisy.github.io/pipeline/WebServiceAPI).
 ;; get help for a particular script
 (print (xml/indent-str (script "dtbook-to-epub3")))
 
-;; invoke a script
-(-> (create-job-and-wait "dtbook-to-epub3" {:source "dtbook-file.xml"} {})
-    get-results
-    first
-    get-stream
-    (io/copy (io/file "book.epub")))
+;; invoke a script.
+;; `with-job` will take care of releasing any resources after completion
+(with-job [job (job-create "sbs:dtbook-to-ebook" {:source "book.xml"} {})]
+  (let [results (get-results (dp2/wait-for-result job))
+        epub-stream (->> results
+                         (filter #(string/ends-with? % ".epub"))
+                         first
+                         get-stream)]
+    (with-open [in epub-stream
+                out (io/output-stream "book.epub")]
+      (io/copy in out))))
 ```
 ## License
 
