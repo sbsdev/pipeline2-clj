@@ -1,11 +1,8 @@
 (ns pipeline2-clj.repl
-  (:require [clojure.java.io :as io]
+  (:require [babashka.fs :as fs]
+            [clojure.java.io :as io]
             [clojure.string :as string]
-            [clojure.tools.logging :as log]
-            [babashka.fs :as fs]
-            [pipeline2-clj.core :as dp2]
-            [pipeline2-clj.scripts :as scripts]
-            [slingshot.slingshot :refer [throw+ try+]]))
+            [pipeline2-clj.core :as dp2]))
 
 (defn epub-name [export-path file]
   (-> file

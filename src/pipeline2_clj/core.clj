@@ -8,14 +8,12 @@
             [clojure.data.zip :as zf]
             [clojure.data.zip.xml :refer [attr xml-> xml1->]]
             [clojure.java.io :as io]
-            [clojure.tools.logging :as log]
             [clojure.zip :refer [xml-zip]]
             [cprop.core :refer [load-config]]
             [cprop.source :as source]
             [crypto.random :as crypt-rand]
             [java-time :as time]
-            [pandect.algo.sha1 :as pandect]
-            [slingshot.slingshot :refer [try+]])
+            [pandect.algo.sha1 :as pandect])
   (:import [java.util.zip ZipEntry ZipOutputStream]))
 
 (def env (load-config :merge [(source/from-system-props)
