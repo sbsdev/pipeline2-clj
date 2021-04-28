@@ -158,19 +158,12 @@
 
 (defmacro with-job
   [[job job-create-form] & body]
-  `(try+
-    (let [~job ~job-create-form]
-      (try
-        ~@body
-        (finally
-          (when ~job
-            (job-delete (get-id ~job))))))
-    (catch [:status 403] {:keys ~'[headers body]}
-      (log/warn "403" ~'headers))
-    (catch [:status 404] {:keys ~'[headers body]}
-      (log/warn "Not Found" ~'headers ~'body))
-    (catch [:status 500] {:keys ~'[headers body]}
-      (log/warn "Server error" ~'headers ~'body))))
+  `(let [~job ~job-create-form]
+     (try
+       ~@body
+       (finally
+         (when ~job
+           (job-delete (get-id ~job)))))))
 
 (defn wait-for-result [job]
   (Thread/sleep poll-interval) ; wait a bit before polling the first time

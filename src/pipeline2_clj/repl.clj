@@ -32,5 +32,7 @@
           epub (str (epub-name out-path dtbook))]
       (println "Ebook:" dtbook)
       (println "EPUB:" epub)
-      (converter dtbook epub))))
+      (try
+        (converter dtbook epub)
+        (catch Exception e (println (ex-message e)))))))
 
