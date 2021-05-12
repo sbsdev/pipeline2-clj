@@ -15,10 +15,12 @@ API](https://daisy.github.io/pipeline/WebServiceAPI).
 ;; get help for a particular script
 (print (xml/indent-str (script "dtbook-to-epub3")))
 
+(require '[clojure.string :as string])
+
 ;; invoke a script.
 ;; `with-job` will take care of releasing any resources after completion
 (with-job [job (job-create "sbs:dtbook-to-ebook" {:source "book.xml"} {})]
-  (let [results (get-results (dp2/wait-for-result job))
+  (let [results (get-results (wait-for-result job))
         epub-stream (->> results
                          (filter #(string/ends-with? % ".epub"))
                          first
