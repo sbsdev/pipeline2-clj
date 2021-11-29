@@ -27,6 +27,12 @@ A Clojure library to interact with the [[https://daisy.github.io/pipeline/WebSer
       (with-open [in epub-stream
                   out (io/output-stream "book.epub")]
         (io/copy in out))))
+
+  ;; get all jobs
+  (print (xml/indent-str (jobs)))
+
+  ;; delete some old jobs
+  (doseq [id ["<job-id>"]] (job-delete id))
 #+END_SRC
 
 ** License
